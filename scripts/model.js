@@ -11,6 +11,8 @@ function createModel() {
   let sliderPosition = 0; // curr enumeration of a frame
   let renderScale = 1;
 
+  let selectedFrame = undefined;
+
   let self = {
     fps,
     startRow,

@@ -30,13 +30,50 @@ function createFrameSelectorView(canvas, spiteSheet, model) {
 
     context.restore();
   }
+  function highlightFrameSquare(color, row, column) {
+    context.save();
+
+    context.fillStyle = color;
+
+    const frameWidth = canvas.width / spriteSheet.getNumColumns();
+    const frameHeight = canvas.height / spriteSheet.getNumRows();
+
+    context.fillRect(
+      frameWidth * column,
+      frameHeight * row,
+      frameWidth,
+      frameHeight
+    );
+
+    context.restore();
+  }
+
+  // colors
+  colors = {
+    startStroke: "#0000FF",
+    startFill: "#DDDDFF",
+    endStroke: "#000000",
+    endFill: "#DDDDDD",
+    currentStroke: "#FF0000",
+    currentFill: "#FFDDDD"
+  };
 
   function draw() {
     clear();
+    drawFrameSquare(colors.startStroke, model.startRow, model.startColumn); // start frame
+    drawFrameSquare(colors.endStroke, model.endRow, model.endColumn); // end frame
+    //drawFrameSquare(colors.currentBox, model.currentRow, model.currentColumn); // current frame
+
+    //highlightFrameSquare(colors.startFill, model.startRow, model.startColumn); // start frame
+    //highlightFrameSquare(colors.endFill, model.endRow, model.endColumn); // end frame
+    highlightFrameSquare(colors.currentFill, model.currentRow, model.currentColumn); // current frame
+
+    if (model.selectedFrame !== undefined) {
+      const sel = model.selectedFrame;
+      highlightFrameSquare(colors[sel + "Fill"], model[sel + "Row"], model[sel + "Column"]);
+    }
+
     drawSpriteSheet();
-    drawFrameSquare("#0000FF", model.startRow, model.startColumn); // start frame
-    drawFrameSquare("#000000", model.endRow, model.endColumn); // end frame
-    drawFrameSquare("#FF0000", model.currentRow, model.currentColumn); // current frame
   }
 
   return {

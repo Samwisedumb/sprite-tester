@@ -77,24 +77,12 @@ function createFrameSelectorController(canvas, spriteSheet, model) {
 
   function setFrame(x, y) {
     const frame = getFrame(x, y);
-
-    model[clickedFrame + "Row"] = model.currentRow = frame.row;
-    model[clickedFrame + "Column"] = model.currentColumn = frame.column;
+    
+    model[model.selectedFrame + "Row"] = model.currentRow = frame.row;
+    model[model.selectedFrame + "Column"] = model.currentColumn = frame.column;
   }
 
-  function mouseMove(event) {
-    setFrame(event.clientX, event.clientY);
-  }
-  function stopDrag(event) {
-    document.removeEventListener("mousemove", mouseMove);
-    document.removeEventListener("mouseup", stopDrag);
-  }
-  function startDrag() {
-    document.addEventListener("mousemove", mouseMove);
-    document.addEventListener("mouseup", stopDrag);
-  }
-
-  canvas.onmousedown = (event) => {
+  function mouseSelectHover(event) {
     const offset = getOffsetRect(canvas);
     const size = scaleFrame(canvas, spriteSheet);
 
@@ -102,12 +90,34 @@ function createFrameSelectorController(canvas, spriteSheet, model) {
     const row = Math.floor((event.clientY - offset.y) / size.frameHeight);
 
     if (row === model.startRow && column === model.startColumn) {
-      clickedFrame = "start";
-      startDrag();
+      model.selectedFrame = "start";
     }
     else if (row === model.endRow && column === model.endColumn) {
-      clickedFrame = "end";
+      model.selectedFrame = "end";
+    }
+    else {
+      model.selectedFrame = undefined;
+    }
+  }
+  canvas.addEventListener("mousemove", mouseSelectHover);
+
+  function dragMouseMove(event) {
+    setFrame(event.clientX, event.clientY);
+  }
+  function stopDrag(event) {
+    document.removeEventListener("mousemove", dragMouseMove);
+    document.removeEventListener("mouseup", stopDrag);
+    canvas.addEventListener("mousemove", mouseSelectHover);
+  }
+  function startDrag() {
+    document.addEventListener("mousemove", dragMouseMove);
+    document.addEventListener("mouseup", stopDrag);
+    canvas.removeEventListener("mousemove", mouseSelectHover);
+  }
+
+  canvas.addEventListener("mousedown", (event) => {
+    if (model.selectedFrame !== undefined) {
       startDrag();
     }
-  };
+  });
 }
