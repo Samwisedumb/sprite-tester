@@ -29,6 +29,7 @@ function createModel() {
 
   // step
   let count = 0;
+
   function step() {
     count += self.fps;
 

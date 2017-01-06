@@ -4,6 +4,7 @@ function createFrameSelectorView(canvas, spiteSheet, model) {
   function clear() {
     context.clearRect(0, 0, canvas.width, canvas.height);
   }
+
   function drawSpriteSheet() {
     context.drawImage(
       spriteSheet.getImage(),
@@ -13,6 +14,7 @@ function createFrameSelectorView(canvas, spiteSheet, model) {
       canvas.height
     );
   }
+
   function drawFrameSquare(color, row, column) {
     context.save();
 
@@ -30,6 +32,7 @@ function createFrameSelectorView(canvas, spiteSheet, model) {
 
     context.restore();
   }
+
   function highlightFrameSquare(color, row, column) {
     context.save();
 

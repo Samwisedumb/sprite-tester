@@ -37,7 +37,7 @@ function getOffsetRect(elem) {
   const clientTop = docElem.clientTop || body.clientTop || 0
   const clientLeft = docElem.clientLeft || body.clientLeft || 0
 
-  const top  = box.top +  scrollTop - clientTop
+  const top = box.top + scrollTop - clientTop
   const left = box.left + scrollLeft - clientLeft
 
   return {
@@ -51,6 +51,14 @@ function scaleFrame(canvas, spriteSheet) {
     frameWidth: spriteSheet.getFrameWidth() / spriteSheet.getImageWidth() * canvas.width,
     frameHeight: spriteSheet.getFrameHeight() / spriteSheet.getImageHeight() * canvas.height,
   };
+}
+
+function clearSelection() {
+  if (window.getSelection) {
+    window.getSelection().removeAllRanges();
+  } else if (document.selection) {
+    document.selection.empty();
+  }
 }
 
 // Frame Selector
@@ -77,7 +85,7 @@ function createFrameSelectorController(canvas, spriteSheet, model) {
 
   function setFrame(x, y) {
     const frame = getFrame(x, y);
-    
+
     model[model.selectedFrame + "Row"] = model.currentRow = frame.row;
     model[model.selectedFrame + "Column"] = model.currentColumn = frame.column;
   }
@@ -91,11 +99,9 @@ function createFrameSelectorController(canvas, spriteSheet, model) {
 
     if (row === model.startRow && column === model.startColumn) {
       model.selectedFrame = "start";
-    }
-    else if (row === model.endRow && column === model.endColumn) {
+    } else if (row === model.endRow && column === model.endColumn) {
       model.selectedFrame = "end";
-    }
-    else {
+    } else {
       model.selectedFrame = undefined;
     }
   }
@@ -104,12 +110,16 @@ function createFrameSelectorController(canvas, spriteSheet, model) {
   function dragMouseMove(event) {
     setFrame(event.clientX, event.clientY);
   }
+
   function stopDrag(event) {
     document.removeEventListener("mousemove", dragMouseMove);
     document.removeEventListener("mouseup", stopDrag);
     canvas.addEventListener("mousemove", mouseSelectHover);
+    model.selectedFrame = undefined;
   }
+
   function startDrag() {
+    clearSelection();
     document.addEventListener("mousemove", dragMouseMove);
     document.addEventListener("mouseup", stopDrag);
     canvas.removeEventListener("mousemove", mouseSelectHover);
@@ -119,5 +129,9 @@ function createFrameSelectorController(canvas, spriteSheet, model) {
     if (model.selectedFrame !== undefined) {
       startDrag();
     }
+  });
+
+  canvas.addEventListener("mouseleave", (event) => {
+    stopDrag();
   });
 }
