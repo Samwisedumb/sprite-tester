@@ -8,6 +8,7 @@ function createController(model) {
 
     let elem = document.getElementById(key);
     elem.type = "number";
+    elem.value = model[key];
 
     elem.oninput = (event) => {
       let value = parseFloat(event.srcElement.value);
@@ -19,10 +20,6 @@ function createController(model) {
     }
   }
 
-  bindViewModelNumber("startRow", ["startRow", "currentRow"]);
-  bindViewModelNumber("startColumn", ["startColumn", "currentColumn"]);
-  bindViewModelNumber("endRow");
-  bindViewModelNumber("endColumn");
   bindViewModelNumber("fps");
 }
 
@@ -68,7 +65,7 @@ function createFramePickerController(canvas, spriteSheet, model) {
     let column = Math.floor((event.clientX - offset.x) / size.frameWidth);
     column = column < 0 ? 0 : column;
     column = column >= spriteSheet.getNumColumns() ? spriteSheet.getNumColumns() - 1 : column;
-    
+
     return {
       row,
       column
