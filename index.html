@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sprite Sheet Tester</title>
+</head>
+
+<body>
+  <!-- sprite animation -->
+  <canvas id="spriteCanvas"></canvas>
+
+  <canvas id="framePickerCanvas"></canvas>
+
+  <!-- spritesheet squares -->
+
+  <!-- user options -->
+  <div id="userOptions">
+    <label for="startRow">Start Row:</label><input id="startRow">
+    <label for="startColumn">Start Column:</label><input id="startColumn">
+    <br>
+    <label for="endRow">End Row:</label><input id="endRow">
+    <label for="endColumn">End Column:</label><input id="endColumn">
+    <br>
+    <label for="fps">FPS</label><input id="fps">
+  </div>
+
+  <!-- scripts -->
+  <script src="scripts/model.js"></script>
+  <script src="scripts/spriteSheet.js"></script>
+  <script src="scripts/animation.js"></script>
+  <script src="scripts/view.js"></script>
+  <script src="scripts/controller.js"></script>
+  <script src="scripts/main.js"></script>
+</body>
+</html>
