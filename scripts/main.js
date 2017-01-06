@@ -6,14 +6,15 @@ const model = createModel({
   endRow: 2,
   endColumn: 8
 });
-const controller = createController(model);
 
-const framePickerCanvas = document.getElementById("framePickerCanvas");
-const framePickerView = createFramePickerView(framePickerCanvas, spriteSheet, model);
-const framePickerController = createFramePickerController(framePickerCanvas, spriteSheet, model);
+const inputController = createInputController(model);
+
+const frameSelectorViewCanvas = document.getElementById("frameSelectorCanvas");
+const frameSelectorView = createFrameSelectorView(frameSelectorViewCanvas, spriteSheet, model);
+const frameSelectorController = createFrameSelectorController(frameSelectorViewCanvas, spriteSheet, model);
 
 spriteSheet.load().then(() => {
-  startAnimation(canvas, spriteSheet, model, framePickerView);
+  startAnimation(canvas, spriteSheet, model, frameSelectorView);
 }).catch((error) => {
   console.log(error);
 });

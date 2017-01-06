@@ -1,9 +1,11 @@
-function startAnimation(canvas, spriteSheet, model) {
+function startAnimation(canvas, spriteSheet, model, frameSelectorView) {
   const context = canvas.getContext("2d");
 
   function animate() {
+    // Clear For Next Render
     context.clearRect(0, 0, canvas.width, canvas.height);
 
+    // Draw Sprite
     context.drawImage(
       spriteSheet.getImage(),
       spriteSheet.getFrameX(model.currentColumn),
@@ -16,10 +18,13 @@ function startAnimation(canvas, spriteSheet, model) {
       spriteSheet.getFrameHeight() * model.renderScale
     );
 
-    framePickerView.draw();
+    // Draw Frame Selector
+    frameSelectorView.draw();
 
+    // Step Model
     model.step();
 
+    // Loop Animation
     window.requestAnimationFrame(animate);
   }
 
